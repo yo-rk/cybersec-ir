@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Cybersecurity Incident Response Dashboard — live alert monitoring, attack simulation, and risk analysis" />
+  <title>IR Dashboard — Cybersecurity Alerts</title>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+
+  <!-- Our stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="dashboard">
+
+    <!-- ───────── Header ───────── -->
+    <header class="header">
+      <div class="header__top">
+        <div>
+          <h1 class="header__title">Incident Response Dashboard</h1>
+          <p class="header__subtitle">Live alerts from the monitoring system</p>
+        </div>
+        <div class="header__actions">
+          <button class="btn btn--ghost" id="btn-auto-refresh" type="button">
+            <svg class="btn__icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+            Auto-Refresh: OFF
+          </button>
+          <button class="btn btn--primary" id="btn-refresh" type="button">
+            <svg class="btn__icon btn-refresh__icon" width="14" height="14" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="23 4 23 10 17 10" />
+              <polyline points="1 20 1 14 7 14" />
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10
+                       M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+            </svg>
+            Refresh
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ───────── Stats Cards ───────── -->
+    <div class="stats-grid">
+      <div class="stat-card" id="stat-total">
+        <div class="stat-card__icon stat-card__icon--blue">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <div class="stat-card__body">
+          <span class="stat-card__value" id="stat-total-val">–</span>
+          <span class="stat-card__label">Total Alerts</span>
+        </div>
+      </div>
+      <div class="stat-card" id="stat-open">
+        <div class="stat-card__icon stat-card__icon--amber">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </div>
+        <div class="stat-card__body">
+          <span class="stat-card__value" id="stat-open-val">–</span>
+          <span class="stat-card__label">Open Alerts</span>
+        </div>
+      </div>
+      <div class="stat-card" id="stat-resolved">
+        <div class="stat-card__icon stat-card__icon--green">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
+        <div class="stat-card__body">
+          <span class="stat-card__value" id="stat-resolved-val">–</span>
+          <span class="stat-card__label">Resolved</span>
+        </div>
+      </div>
+      <div class="stat-card" id="stat-high">
+        <div class="stat-card__icon stat-card__icon--red">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/>
+            <line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </div>
+        <div class="stat-card__body">
+          <span class="stat-card__value" id="stat-high-val">–</span>
+          <span class="stat-card__label">High Risk</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ───────── Charts ───────── -->
+    <div class="charts-grid">
+      <div class="chart-card">
+        <h3 class="chart-card__title">Alerts by Type</h3>
+        <div class="chart-card__body">
+          <canvas id="chart-by-type"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h3 class="chart-card__title">Status Breakdown</h3>
+        <div class="chart-card__body chart-card__body--pie">
+          <canvas id="chart-status"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- ───────── Filters + Count ───────── -->
+    <div class="toolbar">
+      <span class="badge" id="count-badge">Loading…</span>
+      <div class="toolbar__filters">
+        <select class="filter-select" id="filter-status">
+          <option value="ALL">All Statuses</option>
+          <option value="OPEN">Open</option>
+          <option value="RESOLVED">Resolved</option>
+        </select>
+        <select class="filter-select" id="filter-risk">
+          <option value="ALL">All Risk Levels</option>
+          <option value="HIGH">High</option>
+          <option value="MEDIUM">Medium</option>
+          <option value="LOW">Low</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- ───────── Alerts Table ───────── -->
+    <div class="table-card">
+      <div class="table-scroll">
+        <table class="alert-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Source IP</th>
+              <th>Alert Type</th>
+              <th>Threat</th>
+              <th>Vulnerability</th>
+              <th>Action</th>
+              <th>Risk</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="alert-body">
+            <tr><td colspan="9" class="state-msg">Fetching alerts…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <p class="status-line" id="status-line"></p>
+
+    <!-- ───────── Attack Simulation ───────── -->
+    <section class="panel" id="sim-panel">
+      <h2 class="panel__title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+        Attack Simulation
+      </h2>
+      <p class="panel__desc">Simulate security events to test your incident response pipeline.</p>
+
+      <form class="sim-form" id="sim-form">
+        <div class="sim-form__grid">
+          <!-- Source IP — Flexible Input System -->
+          <div class="form-group form-group--ip">
+            <label class="form-label">Source IP</label>
+            <div class="ip-input-group">
+              <select class="form-input ip-select" id="sim-ip-dropdown">
+                <option value="">Known IPs…</option>
+              </select>
+              <input class="form-input ip-text" type="text" id="sim-source-ip"
+                     placeholder="Type IP or select above" />
+            </div>
+            <div class="ip-actions">
+              <button type="button" class="btn btn--sm btn--ghost" id="btn-random-ip"
+                      title="Generate a random IP address">
+                🎲 Random IP
+              </button>
+              <button type="button" class="btn btn--sm btn--ghost" id="btn-same-ip"
+                      title="Re-use the last IP for repeated attacks">
+                🔁 Same IP
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="sim-event-type">Event Type</label>
+            <select class="form-input" id="sim-event-type" required>
+              <option value="">Select…</option>
+              <option value="LOGIN_FAIL">LOGIN_FAIL</option>
+              <option value="SUSPICIOUS_ACTIVITY">SUSPICIOUS_ACTIVITY</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="sim-severity">Severity</label>
+            <select class="form-input" id="sim-severity" required>
+              <option value="">Select…</option>
+              <option value="LOW">LOW</option>
+              <option value="MEDIUM">MEDIUM</option>
+              <option value="HIGH">HIGH</option>
+            </select>
+          </div>
+        </div>
+        <div class="sim-form__footer">
+          <button class="btn btn--danger" type="submit" id="btn-simulate">
+            <svg class="btn__icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+            Simulate Attack
+          </button>
+          <button class="btn btn--danger" type="button" id="btn-simulate-5">
+            <svg class="btn__icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+            Simulate 5 Attacks
+          </button>
+          <span class="sim-form__status" id="sim-status"></span>
+        </div>
+      </form>
+    </section>
+
+  </div>
+
+  <!-- Application logic -->
+  <script src="app.js" defer></script>
+</body>
+</html>
