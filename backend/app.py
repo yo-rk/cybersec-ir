@@ -38,6 +38,14 @@ def generate_ip():
 
 
 # ================================
+# HOME
+# ================================
+@app.route("/")
+def home():
+    return {"message": "CyberSec IR Backend is running"}
+
+
+# ================================
 # SIMULATE ATTACK
 # ================================
 @app.route("/simulate-attack", methods=["POST"])
