@@ -1,4 +1,6 @@
-const API_BASE = "http://127.0.0.1:5050";
+const API_BASE = window.location.hostname === "localhost"
+  ? "http://127.0.0.1:5050"
+  : "https://cybersec-ir-6uc3.onrender.com";
 
 let allAlerts = [];
 
