@@ -85,6 +85,13 @@ body {
   margin-top: 0.25rem;
 }
 
+.system-status {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  letter-spacing: 0.02em;
+}
+
 .header__actions {
   display: flex;
   gap: 0.5rem;

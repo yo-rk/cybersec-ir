@@ -100,6 +100,11 @@ function updateStats(activeData, resolvedData) {
     a => a.severity === "Critical" || a.severity === "High"
   ).length;
   document.getElementById("stat-high-val").textContent = highRisk;
+
+  // System status indicator
+  const isUnderAttack = activeData.length > 0;
+  document.getElementById("system-status").textContent =
+    isUnderAttack ? "🔴 Under Attack" : "🟢 System Secure";
 }
 
 // ==========================
