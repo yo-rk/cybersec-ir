@@ -444,6 +444,31 @@ body {
   border: 1px solid rgba(16, 185, 129, 0.2);
 }
 
+/* Action severity pills */
+.pill--action-critical {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+.pill--action-high {
+  background: rgba(249, 115, 22, 0.12);
+  color: #fb923c;
+  border: 1px solid rgba(249, 115, 22, 0.2);
+}
+
+.pill--action-medium {
+  background: rgba(245, 158, 11, 0.12);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.pill--action-low {
+  background: rgba(16, 185, 129, 0.1);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
 /* Risk pills */
 .pill--risk-high {
   background: rgba(239, 68, 68, 0.15);

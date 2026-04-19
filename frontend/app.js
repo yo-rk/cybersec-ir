@@ -50,6 +50,39 @@ async function loadAlerts() {
 }
 
 // ==========================
+// VULNERABILITY & ACTION MAPS
+// ==========================
+function getVulnerability(type) {
+  const map = {
+    "DDoS": "Traffic Flood",
+    "SQL Injection": "Database Exploit",
+    "Malware": "System Infection",
+    "Phishing": "Credential Theft"
+  };
+  return map[type] || "Unknown";
+}
+
+function getAction(severity) {
+  const map = {
+    "Critical": "Immediate Mitigation",
+    "High": "Block Source IP",
+    "Medium": "Investigate",
+    "Low": "Monitor"
+  };
+  return map[severity] || "Review";
+}
+
+function getActionClass(severity) {
+  const map = {
+    "Critical": "pill--action-critical",
+    "High": "pill--action-high",
+    "Medium": "pill--action-medium",
+    "Low": "pill--action-low"
+  };
+  return map[severity] || "";
+}
+
+// ==========================
 // TABLE
 // ==========================
 function renderTable(data) {
@@ -65,9 +98,9 @@ function renderTable(data) {
       <td>#${alert.id}</td>
       <td>${alert.ip_address}</td>
       <td>${alert.type}</td>
-      <td>${alert.type}</td>
-      <td>-</td>
-      <td>-</td>
+      <td><span class="pill pill--threat">${alert.type}</span></td>
+      <td><span class="pill pill--vuln">${getVulnerability(alert.type)}</span></td>
+      <td><span class="pill ${getActionClass(alert.severity)}">${getAction(alert.severity)}</span></td>
       <td>${alert.severity}</td>
       <td>${alert.status}</td>
       <td>
