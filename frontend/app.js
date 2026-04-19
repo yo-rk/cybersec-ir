@@ -3,6 +3,18 @@ const API_BASE = window.location.hostname === "localhost"
   : "https://cybersec-ir-6uc3.onrender.com";
 
 let allAlerts = [];
+let lastAttackTime = null;
+
+// ==========================
+// LAST ACTIVITY TRACKER
+// ==========================
+function updateLastSeen() {
+  if (!lastAttackTime) return;
+  const diff = Math.floor((Date.now() - lastAttackTime) / 1000);
+  document.getElementById("last-activity").textContent =
+    `Last attack detected: ${diff}s ago`;
+}
+setInterval(updateLastSeen, 1000);
 
 const alertBody = document.getElementById("alert-body");
 const countBadge = document.getElementById("count-badge");
@@ -82,6 +94,7 @@ async function simulateAttack() {
   await fetch(API_BASE + "/simulate-attack", {
     method: "POST"
   });
+  lastAttackTime = new Date();
   loadAlerts();
 }
 

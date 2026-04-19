@@ -92,6 +92,12 @@ body {
   letter-spacing: 0.02em;
 }
 
+.last-activity {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
 .header__actions {
   display: flex;
   gap: 0.5rem;
