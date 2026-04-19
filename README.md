@@ -1,6 +1,57 @@
 # 🛡️ CyberSec Incident Response Dashboard
 
-A real-time cybersecurity incident response dashboard that simulates, monitors, and resolves cyber attacks. Built with a Flask backend and a vanilla HTML/CSS/JS frontend, powered by Supabase for data persistence.
+🚨 A **real-time cybersecurity monitoring dashboard** that simulates, detects, and resolves cyber attacks — built to mimic a Security Operations Center (SOC) workflow.
+
+---
+
+## 🌐 Live Demo
+
+👉 https://cybersec-ir.vercel.app
+
+---
+
+## 🧠 Problem
+
+Modern systems face constant cyber threats — but most academic projects fail to simulate **real-time monitoring and response workflows**.
+
+Security teams need:
+
+* Immediate visibility into threats
+* Risk prioritization
+* Fast resolution mechanisms
+
+---
+
+## 💡 Solution
+
+This project recreates a **SOC-style dashboard** where:
+
+* Attacks are simulated dynamically (DDoS, SQL Injection, Phishing, Malware)
+* Alerts are categorized by severity (Critical, High, etc.)
+* Analysts can monitor, prioritize, and resolve threats in real-time
+* Data is visualized through interactive charts and metrics
+
+---
+
+## ⚡ Key Features
+
+* 🔴 Real-time alert monitoring
+* ⚡ Attack simulation engine
+* 📊 Interactive analytics (type distribution & status breakdown)
+* 🛡 Risk classification system
+* ✅ Alert resolution workflow
+* 🔄 Auto-refreshing dashboard
+
+---
+
+## 🧱 Tech Stack
+
+* **Frontend:** HTML, CSS, JavaScript
+* **Backend:** Flask (Python) + Flask-CORS
+* **Database:** Supabase (PostgreSQL)
+* **Deployment:** Vercel (Frontend) + Render (Backend)
+
+---
 
 ## 📁 Project Structure
 
@@ -8,69 +59,94 @@ A real-time cybersecurity incident response dashboard that simulates, monitors, 
 cybersec-ir/
 │
 ├── backend/
-│   ├── app.py              # Flask API server
-│   ├── requirements.txt    # Python dependencies
+│   ├── app.py
+│   ├── requirements.txt
 │
 ├── frontend/
-│   ├── index.html          # Dashboard UI
-│   ├── style.css           # Styling
-│   ├── app.js              # Frontend logic & API calls
+│   ├── index.html
+│   ├── style.css
+│   ├── app.js
 │
 ├── README.md
 └── .gitignore
 ```
 
+---
+
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-- Python 3.10+
-- A [Supabase](https://supabase.com/) project with an `incidents` table
+* Python 3.10+
+* Supabase project with `incidents` table
+
+---
 
 ### Backend Setup
 
 ```bash
 cd backend
 python -m venv venv
-source venv/bin/activate   # On Windows: venv\Scripts\Activate.ps1
+source venv/bin/activate   # Windows: venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 ```
 
-Create a `.env` file in the `backend/` directory:
+Create `.env` file:
 
-```env
+```
 SUPABASE_URL=your_supabase_url
 SUPABASE_ANON_KEY=your_anon_key
 ```
 
-Run the server:
+Run:
 
 ```bash
 python app.py
 ```
 
-The API will start on `http://127.0.0.1:5050`.
+---
 
 ### Frontend
 
-Open `frontend/index.html` in a browser, or serve it with a local server like Live Server.
+```bash
+cd frontend
+open index.html
+```
+
+---
 
 ## 📡 API Endpoints
 
-| Method | Endpoint               | Description                  |
-|--------|------------------------|------------------------------|
-| POST   | `/simulate-attack`     | Simulate a random attack     |
-| GET    | `/get-active`          | Get active (unresolved) alerts |
-| PUT    | `/resolve/<id>`        | Resolve an incident by ID    |
-| GET    | `/get-resolved`        | Get resolved incidents       |
-| GET    | `/health`              | Health check                 |
+| Method | Endpoint           | Description               |
+| ------ | ------------------ | ------------------------- |
+| POST   | `/simulate-attack` | Generate simulated attack |
+| GET    | `/get-active`      | Fetch active alerts       |
+| GET    | `/get-resolved`    | Fetch resolved alerts     |
+| PUT    | `/resolve/<id>`    | Resolve alert             |
+| GET    | `/health`          | Health check              |
 
-## 🛠️ Tech Stack
+---
 
-- **Backend:** Python, Flask, Flask-CORS
-- **Frontend:** HTML, CSS, JavaScript
-- **Database:** Supabase (PostgreSQL)
+## 🔮 Future Improvements
+
+* 🔌 WebSocket-based real-time updates
+* 🤖 AI-based threat detection
+* 🔐 Authentication & role-based access
+* 📈 Advanced analytics dashboard
+
+---
+
+## 💡 Why This Project Matters
+
+This project demonstrates:
+
+* Full-stack system design
+* Real-time data handling
+* API-based architecture
+* Practical cybersecurity use-case simulation
+
+---
 
 ## 📄 License
 
-This project is for educational purposes.
+For educational purposes.
